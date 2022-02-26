@@ -69,7 +69,7 @@
                 </v-col>
                 <v-col md="12" sm="12" cols="12">จังหวัด</v-col>
                 <v-col md="12" sm="12" cols="12">
-                    <v-select :items="this.carBrand" name="name" item-text="name" label="เลือกจังหวัด" dense solo> </v-select>
+                    <v-select :items="this.province" name="name" item-text="name_th" label="เลือกจังหวัด" dense solo> </v-select>
                 </v-col>
                 <v-col md="12" sm="12" cols="12">อำเภอ</v-col>
                 <v-col md="12" sm="12" cols="12">
@@ -98,23 +98,46 @@
 <script>
 import NavBar from '@/components/NavBar'
 import HeaderNavigation from '@/components/HeaderNavigation'
+import {  mapActions } from 'vuex'
 
 export default {
-  components: {
-    navbar: NavBar,
-    'app-header': HeaderNavigation
-    // 'app-footer': Footer
-  },
-  data () {
-    return {
-      row: null
+    components: {
+        navbar: NavBar,
+        'app-header': HeaderNavigation
+        // 'app-footer': Footer
+    },
+    data() {
+        return {
+            row: null,
+            province: [{
+                id: '',
+                code: '',
+                name_th: '',
+                name_en: '',
+                geography_id: ''
+
+            }]
+        }
+    },
+    methods: {
+        onBack() {
+            this.$router.go(-1)
+        },
+        ...mapActions(['GetAllProvince']),
+        async getAllProvince() {
+            try {
+                await this.GetAllProvince()
+            } catch (error) {
+                console.log(error)
+            }
+        },
+    },
+    created() {
+        this.getAllProvince()
+        if (this.$store.getters.StateProvince !== null) {
+            this.province = this.$store.getters.StateProvince
+        }
     }
-  },
-  methods: {
-    onBack () {
-      this.$router.go(-1)
-    }
-  }
 }
 </script>
 

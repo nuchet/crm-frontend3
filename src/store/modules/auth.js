@@ -4,14 +4,16 @@ const state = {
   user: null,
   posts: null,
   changePassword: null,
-  token: localStorage.getItem('access_token') || null
+  token: localStorage.getItem('access_token') || null,
+  province: null
 }
 
 const getters = {
   isAuthenticated: (state) => !!state.user,
   StatePosts: (state) => state.posts,
   StateUser: (state) => state.user,
-  isChangePassword: (state) => state.changePassword
+  isChangePassword: (state) => state.changePassword,
+  StateProvince: (state) => state.province
 }
 
 const actions = {
@@ -49,6 +51,15 @@ const actions = {
       const user = null
       commit('logout', user)
     }
+  },
+
+  async GetAllProvince ({ commit }) {
+    const response = await axios.get('api/province/listprovince', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+      }
+    })
+    commit('setProvince', response.data)
   }
 }
 
@@ -66,6 +77,9 @@ const mutations = {
   },
   logout (state, user) {
     state.user = user
+  },
+  setProvince (state, province) {
+    state.province = province
   }
 }
 
