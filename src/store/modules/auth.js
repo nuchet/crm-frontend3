@@ -16,12 +16,12 @@ const getters = {
 
 const actions = {
   async LogIn ({ commit }, user) {
-    const response = await axios.post('login', user)
+    const response = await axios.post('api/login', user)
     await commit('setUser', response.data)
   },
 
   async ChangePassword ({ commit }, changePassword) {
-     const response = await axios.post('changepassword', changePassword, {
+     const response = await axios.post('api/changepassword', changePassword, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`
       }
@@ -40,8 +40,15 @@ const actions = {
   },
 
   async LogOut ({ commit }) {
-    const user = null
-    commit('logout', user)
+    const response = await axios.get('api/logout', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+      }
+    })
+    if (response.data.status === true) {
+      const user = null
+      commit('logout', user)
+    }
   }
 }
 
