@@ -33,4 +33,7 @@ nav {
 .vmaninPosition {
   padding: 0 !important;
 }
+#main{
+  overflow-x: hidden;
+}
 </style>
