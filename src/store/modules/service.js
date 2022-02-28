@@ -6,14 +6,21 @@ const state = {
   changePassword: null,
   token: localStorage.getItem('access_token') || null,
   province: null,
+  district: null,
+  subdistrict: null,
   appManUrl: 'https://ml.appman.co.th/v1/thailand-id-card/',
   resultAppMan: null,
   carBrand: null,
   carColor: null,
+  carModel: null,
+  carSubModel: null,
   active: null,
   card: null,
+  cardStatus: null,
   saleTent: null,
-  customer: null
+  customer: null,
+  addCustomer: null,
+  addActive: null
 }
 
 const getters = {
@@ -22,13 +29,19 @@ const getters = {
   StateUser: (state) => state.user,
   isChangePassword: (state) => state.changePassword,
   StateProvince: (state) => state.province,
+  StateDistrict: (state) => state.district,
+  StateSubDistrict: (state) => state.subdistrict,
   StateResultAppMan: (state) => state.resultAppMan,
   StateCarBrand: (state) => state.carBrand,
   StateCarColor: (state) => state.carColor,
+  StateCarModel: (state) => state.carModel,
+  StateCarSubModel: (state) => state.carSubModel,
   StateActive: (state) => state.active,
   StateCard: (state) => state.card,
+  StateCardStatus: (state) => state.cardStatus,
   StateSaleTent: (state) => state.saleTent,
-  StateCustomer: (state) => state.customer
+  StateCustomer: (state) => state.customer,
+  StateAddCustomer: (state) => state.addCustomer
 }
 
 const actions = {
@@ -73,6 +86,26 @@ const actions = {
     commit('setProvince', response.data)
   },
 
+  async GetDistrict ({ commit }) {
+    const response = await axios.get('api/province/listdistrict/3')
+    commit('setDistrict', response.data)
+  },
+
+  async GetSubDistrict ({ commit }) {
+    const response = await axios.get('api/province/listsubdistrict/3')
+    commit('setSubDistrict', response.data)
+  },
+
+  async CheckCardNumber ({ commit }) {
+    const response = await axios.get('api/cardstatus', {
+      headers: { 
+        Accept: 'application/json', 
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+      },
+    })
+    commit('checkCardNumber', response.data)
+  },
+
   async GetAllCarBrand ({ commit }) {
     const response = await axios.get('api/car/brand')
     commit('setCarBrand', response.data)
@@ -81,6 +114,16 @@ const actions = {
   async GetAllCarColor ({ commit }) {
     const response = await axios.get('api/car/color')
     commit('setCarColor', response.data)
+  },
+
+  async GetCarModel ({ commit }) {
+    const response = await axios.get('api/car/model/1')
+    commit('setCarModel', response.data)
+  },
+
+  async GetCarSubModel ({ commit }) {
+    const response = await axios.get('api/car/submodel/10')
+    commit('setSubCarModel', response.data)
   },
 
   async GetAllActive ({ commit }) {
@@ -119,6 +162,23 @@ const actions = {
     commit('setCustomer', response.data)
   },
 
+  async CreateCustomer ({ commit }, addcustomer) {
+    const response = await axios.post('api/addcustomer', addcustomer, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+      }
+    })
+    commit('setAddCustomer', response.data)
+  },
+
+  async CreateActive ({ commit }, addActive) {
+    const response = await axios.post('api/active', addActive, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`
+      }
+    })
+    commit('setAddActive', response.data)
+  },
 
   async CheckDataAppMan ({ commit}, file) {
     const config = {
@@ -150,6 +210,12 @@ const mutations = {
   setProvince (state, province) {
     state.province = province
   },
+  setDistrict (state, district) {
+    state.district = district
+  },
+  setSubDistrict (state, subdistrict) {
+    state.subdistrict = subdistrict
+  },
   setResultAppMan (state, result) {
     state.resultAppMan = result
   },
@@ -170,6 +236,12 @@ const mutations = {
   }, 
   setCustomer (state, customer) {
     state.customer = customer
+  },
+  setAddCustomer (state, addCustomer) {
+    state.addCustomer = addCustomer
+  },
+  CheckCardNumber (state, cardStatus) {
+    state.cardStatus = cardStatus
   }
 }
 

@@ -661,6 +661,7 @@ import HeaderNavigation from '@/components/HeaderNavigation'
 import { Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
 import moment from 'moment'
+import { mapActions } from 'vuex'
 
 export default {
   data () {
@@ -1156,8 +1157,160 @@ export default {
         this.step3.dataRequest.imgConfirm = this.$refs.canvas3.toDataURL()
       }
       this.closeModalCamera()
+    },
+
+      ...mapActions(['GetAllProvince']),
+    async getAllProvince() {
+        try {
+            await this.GetAllProvince()
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    
+
+    ...mapActions(['GetAllCarBrand']),
+    async getAllCarBrand() {
+        try {
+            await this.GetAllCarBrand()
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    ...mapActions(['GetAllCarColor']),
+    async getAllCarColor() {
+        try {
+            await this.GetAllCarColor()
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    ...mapActions(['GetAllActive']),
+    async getAllActive() {
+        try {
+            await this.GetAllActive()
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    ...mapActions(['GetAllCard']),
+    async getAllCard() {
+        try {
+            await this.GetAllCard()
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    ...mapActions(['GetAllSaleTent']),
+    async getAllSaleTent() {
+        try {
+            await this.GetAllSaleTent()
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    ...mapActions(['GetAllCustomer']),
+    async getAllCustomer() {
+        try {
+            await this.GetAllCustomer()
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
+    ...mapActions(['CheckDataAppMan']),
+    async checkdata() {
+        const fileImage = new FormData()
+        var img = require('@/assets/967569.jpg')
+        fileImage.append('image', img)
+        try {
+            await this.CheckDataAppMan(fileImage)
+
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    ...mapActions(['CreateCustomer']),
+    async createCustomer() {
+        var Customer = new FormData()
+        Customer.append('customer_name','test')
+        Customer.append('customer_surname','หายแว็ป')
+        Customer.append('birth_date', '2022-02-28')
+        Customer.append('gender', 2)
+        Customer.append('id_card', 1234567879)
+        Customer.append('tel', '09981122')
+        Customer.append('email', 'test@test.com')
+        Customer.append('line_id', '@id_line')
+        Customer.append('formal_address', 1212312)
+        Customer.append('formal_province_id', 1)
+        Customer.append('formal_amphure_id', 2)
+        Customer.append('formal_tumbon', 100203)
+        Customer.append('formal_post_code', 22000)
+        Customer.append('current_address', 1212312)
+        Customer.append('current_province_id', 1)
+        Customer.append('current_amphure_id', 2)
+        Customer.append('current_tumbon_id', 100203)
+        Customer.append('current_post_code', 22000)
+        Customer.append('note', 'test')
+        
+          try {
+            await this.CreateCustomer(Customer)
+
+        } catch (error) {
+            console.log(error);
+        }
+    },
+
+    ...mapActions(['CreateActive']),
+    async createActive() {
+        const Active = new FormData()
+        Active.append('sale_id')
+        Active.append('customer_id')
+        Active.append('buy_date')
+        Active.append('activate_date')
+        Active.append('converage_month')
+        Active.append('converage_km')
+        Active.append('insurance_use')
+        Active.append('insurance_case')
+        Active.append('insurance_tel')
+        Active.append('insurance_ew')
+        Active.append('insurance_ew_case')
+        Active.append('insurance_ew_tel')
+        Active.append('package_price')
+        Active.append('paid_status')
+        Active.append('commission')
+        Active.append('commission_status')
+        Active.append('car_brand_id')
+        Active.append('car_model_id')
+        Active.append('car_year')
+        Active.append('car_register_num')
+        Active.append('car_province_id')
+        Active.append('car_vin')
+        Active.append('engine_code')
+        Active.append('car_mile')
+        Active.append('car_date')
+        Active.append('car_cc')
+        Active.append('warranty_status')
     }
-  }
+  },
+    created() {
+        this.checkdata()
+        this.createCustomer()
+        this.getAllProvince()
+        this.getAllCarBrand()
+        this.getAllCarColor()
+        this.getAllActive()
+        this.getAllCard()
+        this.getAllSaleTent()
+        this.getAllCustomer()
+    }
 }
 </script>
 

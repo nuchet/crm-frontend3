@@ -21,7 +21,7 @@ axios.defaults.headers.common['Content-Type'] = 'application/x-www-form-urlencod
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS, PUT, PATCH, DELETE'
 axios.defaults.headers.common['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept,Authorization, Access-Control-Allow-Origin'
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*'
-axios.defaults.baseURL = 'http://localhost:8080/'
+axios.defaults.baseURL = 'https://10.20.0.121:8080/'
 
 axios.interceptors.response.use(undefined, function (error) {
   if (error) {
