@@ -24,10 +24,10 @@
               <img src="@/assets/step-active.png" v-if="currentStep == 4">
               <img src="@/assets/step-non-active.png" v-else>
             </div>
-            <div class="step">
+            <!-- <div class="step">
               <img src="@/assets/step-active.png" v-if="currentStep == 5">
               <img src="@/assets/step-non-active.png" v-else>
-            </div>
+            </div>-->
           </div>
           <div id="step-title">
             <b-container class="bv-example-row" v-if="currentStep == 1">
