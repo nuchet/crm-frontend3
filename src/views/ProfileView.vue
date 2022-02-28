@@ -10,7 +10,7 @@
     </div>
     <div class="content">
         <div class="input-wrapper">
-            <v-btn color="black white--text" elevation="3" large small x-large x-small to="/membership" type="submit">
+            <v-btn color="black white--text" elevation="3" large small x-large x-small to="/identification" type="submit">
                 เปิดความคุ้มครอง white card
             </v-btn>
             <br />

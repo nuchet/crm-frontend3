@@ -20,7 +20,7 @@ const state = {
   saleTent: null,
   customer: null,
   addCustomer: null,
-  addActive: null
+  addActive: null,
 }
 
 const getters = {
@@ -41,7 +41,7 @@ const getters = {
   StateCardStatus: (state) => state.cardStatus,
   StateSaleTent: (state) => state.saleTent,
   StateCustomer: (state) => state.customer,
-  StateAddCustomer: (state) => state.addCustomer
+  StateAddCustomer: (state) => state.addCustomer,
 }
 
 const actions = {
@@ -94,16 +94,27 @@ const actions = {
   async GetSubDistrict ({ commit }) {
     const response = await axios.get('api/province/listsubdistrict/3')
     commit('setSubDistrict', response.data)
+
   },
 
   async CheckCardNumber ({ commit }) {
-    const response = await axios.get('api/cardstatus', {
+    console.log("kkkk");
+    const response = await axios.get('api/cardstatus?card_number=NXT220100003', {
       headers: { 
         Accept: 'application/json', 
         Authorization: `Bearer ${localStorage.getItem('access_token')}`
       },
+    }).catch((error) => {
+      console.log(error.response.data);
     })
-    commit('checkCardNumber', response.data)
+    // const response = await axios.get('api/listactivate', {
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.getItem('access_token')}`
+    //   }
+    // })
+    console.log(response);
+    console.log(localStorage.getItem('access_token'));
+    commit('setCardNumber', response.data)
   },
 
   async GetAllCarBrand ({ commit }) {
@@ -240,7 +251,7 @@ const mutations = {
   setAddCustomer (state, addCustomer) {
     state.addCustomer = addCustomer
   },
-  CheckCardNumber (state, cardStatus) {
+  setCardNumber (state, cardStatus) {
     state.cardStatus = cardStatus
   }
 }

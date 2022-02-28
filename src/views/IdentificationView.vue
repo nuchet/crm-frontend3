@@ -179,9 +179,9 @@
                     </div>
                       <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn icon @click="$bvModal.show('bv-modal-camera1')">
+                    <!-- <v-btn icon @click="$bvModal.show('bv-modal-camera1')">
                       <v-icon>mdi-camera</v-icon>
-                    </v-btn>
+                    </v-btn> -->
                     <input id="fileUpload1" accept="image/*" type="file" hidden @change="selectImage($event)">
                       <v-btn icon @click="chooseFiles()">
                       <v-icon>mdi-image</v-icon>
@@ -306,9 +306,9 @@
                     </div>
                       <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn icon @click="$bvModal.show('bv-modal-camera2')">
+                    <!-- <v-btn icon @click="$bvModal.show('bv-modal-camera2')">
                       <v-icon>mdi-camera</v-icon>
-                    </v-btn>
+                    </v-btn> -->
                     <input id="fileUpload2" accept="image/*" type="file" hidden @change="selectImage($event)">
                       <v-btn icon @click="chooseFiles()">
                       <v-icon>mdi-image</v-icon>
@@ -501,9 +501,9 @@
                     </div>
                       <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn icon @click="$bvModal.show('bv-modal-camera3')">
+                    <!-- <v-btn icon @click="$bvModal.show('bv-modal-camera3')">
                       <v-icon>mdi-camera</v-icon>
-                    </v-btn>
+                    </v-btn> -->
                     <input id="fileUpload3" accept="image/*" type="file" hidden @change="selectImage($event)">
                       <v-btn icon @click="chooseFiles()">
                       <v-icon>mdi-image</v-icon>
@@ -881,14 +881,15 @@ export default {
         this.step1.isCompleteValid = this.step1.dataRequest.imgConfirm != ''
         this.step1.isCheck = true
         if (this.$refs.form1.validate() && this.step1.isCompleteValid) {
-          this.currentStep += 1
-          this.scrollToTop()
+           this.currentStep += 1
+            this.scrollToTop()
+         
           //setTimeout(() => this.setUiInputImage(), 200)
         }
       } else if(step === 2){
         this.step2.isCompleteValid = this.step2.dataRequest.imgConfirm != '' && this.step2.dataRequest.birthDate != ''
         this.step2.isCheck = true
-        if (this.$refs.form2.validate(),this.step2.isCompleteValid) {
+        if (this.$refs.form2.validate() && this.step2.isCompleteValid) {
           this.currentStep += 1
           this.scrollToTop()
           //setTimeout(() => this.setUiInputImage(), 200)
@@ -1262,9 +1263,19 @@ export default {
         
           try {
             await this.CreateCustomer(Customer)
+            console.log(this.$store.getters.StateAddCustomer)
 
         } catch (error) {
             console.log(error);
+        }
+    },
+
+    ...mapActions(['CheckCardNumber']),
+    async checkCardNumber() {
+      try {
+            await this.CheckCardNumber(this.step1.dataRequest.memberNumber)
+        } catch (error) {
+            console.log(error)
         }
     },
 
@@ -1301,7 +1312,6 @@ export default {
     }
   },
     created() {
-        this.checkdata()
         this.createCustomer()
         this.getAllProvince()
         this.getAllCarBrand()
