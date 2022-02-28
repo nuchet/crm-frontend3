@@ -30,7 +30,7 @@
             </div>-->
           </div>
           <div id="step-title">
-            <b-container class="bv-example-row" v-if="currentStep == 1">
+            <b-container class="bv-example-row" v-show="currentStep == 1">
               <div class="title-number">
                 <span>1</span>
               </div>
@@ -38,7 +38,7 @@
                 <span>กรุณาถ่ายรูปบัตรสมาชิก/บุ๊คเซอร์วิส</span>
               </div>
             </b-container>
-            <b-container class="bv-example-row" v-if="currentStep == 2">
+            <b-container class="bv-example-row" v-show="currentStep == 2">
               <div class="title-number">
                 <span>2</span>
               </div>
@@ -46,7 +46,7 @@
                 <span>กรุณาถ่ายรูปบัตรประชาชน</span>
               </div>
             </b-container>
-            <b-container class="bv-example-row" v-if="currentStep == 3">
+            <b-container class="bv-example-row" v-show="currentStep == 3">
               <div class="title-number">
                 <span>3</span>
               </div>
@@ -54,7 +54,7 @@
                 <span>กรุณาถ่ายสำเนาทะเบียนรถ</span>
               </div>
             </b-container>
-            <b-container class="bv-example-row" v-if="currentStep == 4">
+            <b-container class="bv-example-row" v-show="currentStep == 4">
               <div class="title-number">
                 <span>4</span>
               </div>
@@ -73,13 +73,13 @@
             </b-container> -->
           </div>
         </div>
-        <div v-if="currentStep == 1" style="display: flex;justify-content: center;margin-top:-10px">
-          <div class="segment-step" :optionsSelected="step1.optionsSelected == '1'" @click="onSelect('1')">บัตรสมาชิก</div>
-          <div class="segment-step" :optionsSelected="step1.optionsSelected == '2'" @click="onSelect('2')">บุ๊คเซอร์วิส</div>
+        <div v-show="currentStep == 1" style="display: flex;justify-content: center;margin-top:-10px">
+          <div class="segment-step" :optionsSelected="step1.optionsSelected == '1'" @click="onSelect('1')"><span>บัตรสมาชิก</span></div>
+          <div class="segment-step" :optionsSelected="step1.optionsSelected == '2'" @click="onSelect('2')"><span>บุ๊คเซอร์วิส</span></div>
         </div>
       </div>
       <div class="bg-content">
-        <div id="step1" v-if="currentStep == 1">
+        <div id="step1" v-show="currentStep == 1">
           <div>
             <b-modal id="bv-modal-upload1" size="xl" hide-footer hide-header-close no-close-on-esc no-close-on-backdrop>
               <template #modal-title>
@@ -173,7 +173,9 @@
                         v-if="step1.dataRequest.imgConfirm != ''"
                         :src="step1.dataRequest.imgConfirm"/>
                       <img v-else src="@/assets/icon-01.jpg" alt="">
-                      <v-text-field tag="image-input" name="imageMember" type="text" hidden  v-model="step1.dataRequest.imgConfirm" required :rules="imageRules"></v-text-field>
+                      <input tag="1" name="imageMember" type="text" hidden v-model="step1.dataRequest.imgConfirm"/>
+                      <label v-show="step1.dataRequest.imgConfirm == '' && step1.isCheck" class="valid-lable">กรุณาอัพโหลดรูป</label>
+                        <!-- <v-text-field tag="image-input" name="imageMember" type="text" hidden  v-model="step1.dataRequest.imgConfirm" required :rules="imageRules"></v-text-field> -->
                     </div>
                       <v-card-actions>
                     <v-spacer></v-spacer>
@@ -198,13 +200,13 @@
                   </span>
                 </v-col>
                 <v-col md="12" sm="12" cols="12">
-                  <v-text-field type="text" solo name="memberNumber" v-model="step1.dataRequest.memberNumber" required :rules="dataRules" ></v-text-field>
+                  <v-text-field type="text" solo name="memberNumber" :label="step1.optionsSelected == '1' ? 'กรอกเลขบัตรสมาชิก' : 'กรอกบุ๊คเซอร์วิช'" v-model="step1.dataRequest.memberNumber" required :rules="dataRules" ></v-text-field>
                 </v-col>
               </v-row>
             </v-form>
           </div>
         </div>
-        <div id="step2" v-if="currentStep == 2">
+        <div id="step2" v-show="currentStep == 2">
           <div>
             <b-modal id="bv-modal-upload2" size="xl" hide-footer hide-header-close no-close-on-esc no-close-on-backdrop>
               <template #modal-title>
@@ -298,7 +300,9 @@
                         v-if="step2.dataRequest.imgConfirm != ''"
                         :src="step2.dataRequest.imgConfirm"/>
                       <img v-else src="@/assets/identification.png" alt="">
-                      <v-text-field name="imageIden" tag="image-input" type="text" hidden  v-model="step1.dataRequest.imgConfirm" required :rules="imageRules"></v-text-field>
+                      <input tag="2" name="imageIden" type="text" hidden v-model="step2.dataRequest.imgConfirm"/>
+                      <label v-show="step2.dataRequest.imgConfirm == '' && step2.isCheck" class="valid-lable">กรุณาอัพโหลดรูป</label>
+                      <!--<v-text-field name="imageIden" tag="image-input" type="text" hidden  v-model="step2.dataRequest.imgConfirm" required :rules="imageRules"></v-text-field> -->
                     </div>
                       <v-card-actions>
                     <v-spacer></v-spacer>
@@ -312,35 +316,92 @@
                   </v-card-actions>
                   </v-card>
                 </v-col>
-                <v-col md="12" sm="12" cols="12">
+                <v-col md="6" sm="6" cols="6">
+                  <span>
+                    ชื่อลูกค้า
+                  </span>
+                </v-col>
+                <v-col md="6" sm="6" cols="6">
+                  <span>
+                    นามสกุลลูกค้า
+                  </span>
+                </v-col>
+                <v-col md="6" sm="6" cols="6">
+                  <v-text-field type="text" solo name="memberName" v-model="step2.dataRequest.memberName" required :rules="dataRules" label="กรอกชื่อ"></v-text-field>
+                </v-col>
+                <v-col md="6" sm="6" cols="6">
+                  <v-text-field type="text" solo name="memberSurName" v-model="step2.dataRequest.memberSurName" required :rules="dataRules" label="กรอกนามสกุล"></v-text-field>
+                </v-col>
+                <v-col md="6" sm="6" cols="6">
                   <span>
                     เลขบัตรประชาชน
                   </span>
                 </v-col>
-                <v-col md="12" sm="12" cols="12">
-                  <v-text-field v-text-field type="text" solo></v-text-field>
+                <v-col md="6" sm="6" cols="6">
+                  <span>
+                    เพศสภาพ
+                  </span>
+                </v-col>
+                <v-col md="6" sm="6" cols="6">
+                  <v-text-field type="text" solo name="idenNumber" v-model="step2.dataRequest.idenNumber" required :rules="dataRules" label="กรอกเลขบัตรประชาชน"></v-text-field>
+                </v-col>
+                <v-col md="6" sm="6" cols="6" style="padding-right:0">
+                  <v-radio-group v-model="step2.dataRequest.sexMember" row required :rules="dataRules">
+                      <v-radio label="ชาย" value="male"></v-radio>
+                      <v-radio label="หญิง" value="female"></v-radio>
+                  </v-radio-group>
                 </v-col>
                 <v-col md="12" sm="12" cols="12">
                   <span>
-                    ชื่อ
+                    วัน-เดือน-ปีเกิด
                   </span>
                 </v-col>
                 <v-col md="12" sm="12" cols="12">
-                  <v-text-field v-text-field type="text" solo></v-text-field>
+                  <b-form-datepicker v-model="step2.birthDateShow" size="lg" @context="onContext($event,'birthDate')" id="birthDate" :date-format-options="{ year: 'numeric', month: 'short', day: '2-digit' }" locale="th"></b-form-datepicker>
+                  <input tag="2" name="birthDate" type="text" hidden v-model="step2.dataRequest.birthDate"/>
+                  <label v-show="step2.dataRequest.birthDate == '' && step2.isCheck" class="valid-lable">กรุณากรอกข้อมูลให้สมบูรณ์</label>
+                  <!--<v-text-field name="birthDate" tag="date-input" type="text" hidden  v-model="step2.dataRequest.birthDate" required :rules="dataRules"></v-text-field>-->
                 </v-col>
+                <v-col md="12" sm="12" cols="12">เบอร์โทรติดต่อ</v-col>
                 <v-col md="12" sm="12" cols="12">
-                  <span>
-                    วัน/เดือน/ปี
-                  </span>
+                    <v-text-field type="text" v-model="step2.dataRequest.memberPhone" name="memberPhone" solo label="กรอกเบอร์โทรติดต่อ" required :rules="dataRules"></v-text-field>
                 </v-col>
-                <v-col md="4" sm="4" cols="4"> <v-select label="Solo field" solo></v-select></v-col>
-                <v-col md="4" sm="4" cols="4"> <v-select label="Solo field" solo></v-select></v-col>
-                <v-col md="4" sm="4" cols="4"> <v-select label="Solo field" solo></v-select></v-col>
+              
+                <v-col md="6" sm="6" cols="6">Email</v-col>
+                <v-col md="6" sm="6" cols="6">Line ID</v-col>
+
+                <v-col md="6" sm="6" cols="6">
+                    <v-text-field type="text" v-model="step2.dataRequest.memberEmail" name="memberEmail" solo label="กรอกอีเมล" ></v-text-field>
+                </v-col>
+                <v-col md="6" sm="6" cols="6">
+                    <v-text-field type="text" v-model="step2.dataRequest.memberLineID"  name="memberLineID" solo label="กรอก lind ID" ></v-text-field>
+                </v-col>
+                <v-col md="12" sm="12" cols="12">ที่อยู่</v-col>
+                <v-col md="12" sm="12" cols="12">
+                    <v-text-field type="text" v-model="step2.dataRequest.memberAddress"  name="memberAddress" solo label="กรอกที่อยู่" required :rules="dataRules"></v-text-field>
+                </v-col>
+                <v-col md="12" sm="12" cols="12">จังหวัด</v-col>
+                <v-col md="12" sm="12" cols="12">
+
+                    <v-select :items="this.selectOption.memberProvince" v-model="step2.dataRequest.memberProvince"  name="memberProvince" label="เลือกจังหวัด" dense solo required :rules="dataRules"> </v-select>
+                </v-col>
+                <v-col md="12" sm="12" cols="12">อำเภอ</v-col>
+                <v-col md="12" sm="12" cols="12">
+                    <v-select :items="this.selectOption.memberDistrict" v-model="step2.dataRequest.memberDistrict"  name="memberDistrict" label="เลือกอำเภอ" dense solo required :rules="dataRules"> </v-select>
+                </v-col>
+                <v-col md="12" sm="12" cols="12">ตำบล</v-col>
+                <v-col md="12" sm="12" cols="12">
+                    <v-select :items="this.selectOption.memberSubDistrict" v-model="step2.dataRequest.memberSubDistrict"  name="memberSubDistrict" label="เลือกตำบล" dense solo required :rules="dataRules"> </v-select>
+                </v-col>
+                <v-col md="12" sm="12" cols="12">รหัสไปรษณีย์</v-col>
+                <v-col md="12" sm="12" cols="12">
+                    <v-text-field type="text" v-model="step2.dataRequest.memberZipCode" name="memberZipCode" solo label="กรอกรหัสไปรษณีย์" required :rules="dataRules"></v-text-field>
+                </v-col>
               </v-row>
             </v-form>
           </div>
         </div>
-        <div id="step3" v-if="currentStep == 3">
+        <div id="step3" v-show="currentStep == 3">
           <div>
             <b-modal id="bv-modal-upload3" size="xl" hide-footer hide-header-close no-close-on-esc no-close-on-backdrop>
               <template #modal-title>
@@ -425,7 +486,7 @@
             </b-modal>
           </div>
           <div class="content">
-            <v-form>
+            <v-form ref="form3" v-model="valid" lazy-validation>
               <v-row>
                   <v-col md="12" sm="12" cols="12">
                   <v-card  class="mx-auto" style="">
@@ -434,6 +495,9 @@
                         v-if="step3.dataRequest.imgConfirm != ''"
                         :src="step3.dataRequest.imgConfirm"/>
                       <img v-else src="@/assets/vehicleRegis.png" alt="">
+                      <input tag="3" name="imageVehicle" type="text" hidden v-model="step3.dataRequest.imgConfirm"/>
+                      <label v-show="step3.dataRequest.imgConfirm == '' && step3.isCheck" class="valid-lable">กรุณาอัพโหลดรูป</label>
+                      <!--<v-text-field name="imageVehicle" tag="image-input" type="text" hidden  v-model="step3.dataRequest.imgConfirm" required :rules="imageRules"></v-text-field>-->
                     </div>
                       <v-card-actions>
                     <v-spacer></v-spacer>
@@ -447,55 +511,93 @@
                   </v-card-actions>
                   </v-card>
                 </v-col>
-                <v-col md="12" sm="12" cols="12">ยี่ห้อ</v-col>
+                <v-col md="12" sm="12" cols="12">เต็นท์รถ</v-col>
                 <v-col md="12" sm="12" cols="12">
-                <v-select :items="this.carBrand" name="name" item-text="name" label="เลือกยี่ห้อรถ" dense solo> </v-select>
+                  <v-select :items="this.selectOption.carTent" v-model="step3.dataRequest.carTent"  name="carTent" label="-- Please Select --" dense solo required :rules="dataRules"> </v-select>
                 </v-col>
-                <v-col md="12" sm="12" cols="12">รุ่น</v-col>
+                <v-col md="12" sm="12" cols="12">รหัสบนการ์ดสมาชิก</v-col>
                 <v-col md="12" sm="12" cols="12">
-                <v-select :items="this.carModel" dense solo name="name" item-text="name"> </v-select>
+                  <v-select :items="this.selectOption.memberCard" v-model="step3.dataRequest.memberCard" name="memberCard" label="-- Please Select --" dense solo required :rules="dataRules"> </v-select>
                 </v-col>
-                <v-col md="12" sm="12" cols="12">ปี</v-col>
+                <v-col md="12" sm="12" cols="12">ยื่ห้อรถยนต์</v-col>
                 <v-col md="12" sm="12" cols="12">
-                    <v-text-field type="text" solo name="membership" id="membership"></v-text-field>
+                  <v-select :items="this.selectOption.carBrand" v-model="step3.dataRequest.carBrand" name="carBrand" label="-- Please Select --" dense solo required :rules="dataRules"> </v-select>
                 </v-col>
-                <v-col md="12" sm="12" cols="12">ทะเบียน</v-col>
+                <v-col md="12" sm="12" cols="12">รุ่นรถยนต์</v-col>
                 <v-col md="12" sm="12" cols="12">
-                    <v-text-field type="text" solo name="membership" id="membership"></v-text-field>
+                  <v-select :items="this.selectOption.carModel" v-model="step3.dataRequest.carModel" name="carModel" label="-- Please Select --" dense solo required :rules="dataRules"> </v-select>
                 </v-col>
-                <v-col md="12" sm="12" cols="12">จังหวัดที่ลงทะเบียน</v-col>
+
+                <v-col md="6" sm="6" cols="6">รหัสตัวถัง</v-col>
+                <v-col md="6" sm="6" cols="6">รหัสเครื่องยนต์</v-col>
+                <v-col md="6" sm="6" cols="6">
+                    <v-text-field type="text" name="tankNumber" v-model="step3.dataRequest.tankNumber"  solo label="กรอกรหัสตัวถัง" required :rules="dataRules"></v-text-field>
+                </v-col>
+                <v-col md="6" sm="6" cols="6">
+                    <v-text-field type="text" name="machineNumber" v-model="step3.dataRequest.machineNumber"  solo label="กรอกรหัสเครื่องยนต์" required :rules="dataRules"></v-text-field>
+                </v-col>
+
+                <v-col md="6" sm="6" cols="6">จังหวัดที่ลงทะเบียน</v-col>
+                <v-col md="6" sm="6" cols="6">ทะเบียนรถ</v-col>
+                <v-col md="6" sm="6" cols="6">
+                  <v-select :items="this.selectOption.carProvince" v-model="step3.dataRequest.carProvince" name="carProvince" label="-- Please Select --" dense solo required :rules="dataRules"> </v-select>
+                </v-col>
+                <v-col md="6" sm="6" cols="6">
+                  <v-text-field type="text" v-model="step3.dataRequest.carId" name="carId" required :rules="dataRules" label="กรอกทะเบียนรถ" solo></v-text-field>
+                </v-col>
+
+                <v-col md="6" sm="6" cols="6">เลขไมล์ตั้งต้น</v-col>
+                <v-col md="6" sm="6" cols="6">ความจุเครื่องยนต์</v-col>
+                <v-col md="6" sm="6" cols="6">
+                  <v-text-field type="text" v-model="step3.dataRequest.mileage" name="mileage" required :rules="dataRules" solo label="กรอกเลขไมล์ตั้งต้น" ></v-text-field>
+                </v-col>
+                <v-col md="6" sm="6" cols="6">
+                  <v-text-field type="text" v-model="step3.dataRequest.capCar" name="capCar" required :rules="dataRules" solo label="กรอกความจุเครื่องยนต์" ></v-text-field>
+                </v-col>
+
+              
+                <v-col md="12" sm="12" cols="12">ปีที่ผลิตรถยนต์</v-col>
                 <v-col md="12" sm="12" cols="12">
-                <v-select :items="this.province"  dense solo name="name_th" item-text="name_th"> </v-select>
+                  <v-select :items="selectOption.carYear" v-model="step3.dataRequest.carYear" name="carYear" label="-- Please Select --" dense solo required :rules="dataRules"> </v-select>
                 </v-col>
-                <v-col md="12" sm="12" cols="12">เลขตัวถัง</v-col>
+                <v-col md="12" sm="12" cols="12">วันที่ออกรถยนต์</v-col>
                 <v-col md="12" sm="12" cols="12">
-                    <v-text-field type="text" solo name="membership" id="membership"></v-text-field>
+                  <b-form-datepicker v-model="step3.carDateShow" size="lg" @context="onContext($event,'carDate')" id="carDate" :date-format-options="{ year: 'numeric', month: 'short', day: '2-digit' }" locale="th"></b-form-datepicker>
+                  <input tag="3" name="carDate" type="text" hidden v-model="step3.dataRequest.carDate"/>
+                  <!--<v-text-field name="carDate" tag="date-input" type="text" hidden  v-model="step3.dataRequest.carDate" required :rules="dataRules"></v-text-field>-->
                 </v-col>
+                
                 <v-col md="12" sm="12" cols="12">สีรถ</v-col>
                 <v-col md="12" sm="12" cols="12">
-                    <v-text-field type="text" solo name="membership" id="membership"></v-text-field>
+                  <v-select :items="selectOption.carColor" v-model="step3.dataRequest.carColor1" name="carColor1" label="-- Please Select --" dense solo > </v-select>
                 </v-col>
-                <v-col md="12" sm="12" cols="12">วันที่ออกรถ</v-col>
+                <v-col md="12" sm="12" cols="12">สีรถ2</v-col>
                 <v-col md="12" sm="12" cols="12">
-                    <v-text-field type="text" solo name="membership" id="membership"></v-text-field>
+                  <v-select :items="selectOption.carColor" v-model="step3.dataRequest.carColor2" name="carColor2" label="-- Please Select --" dense solo > </v-select>
                 </v-col>
-                <v-col md="12" sm="12" cols="12">เลขไมล์</v-col>
+                <v-col md="12" sm="12" cols="12">สีรถ3</v-col>
                 <v-col md="12" sm="12" cols="12">
-                    <v-text-field type="text" solo name="membership" id="membership"></v-text-field>
+                  <v-select :items="selectOption.carColor" v-model="step3.dataRequest.carColor3" name="carColor3" label="-- Please Select --" dense solo> </v-select>
+                </v-col>
+                
+
+                <!-- <v-col md="12" sm="12" cols="12">เลขไมล์</v-col>
+                <v-col md="12" sm="12" cols="12">
+                  <v-text-field type="text" solo name="mileage" v-model="step3.dataRequest.mileage" required :rules="dataRules" ></v-text-field>
                 </v-col>
                 <v-col md="12" sm="12" cols="12">เบอร์</v-col>
                 <v-col md="12" sm="12" cols="12">
-                    <v-text-field type="text" solo name="membership" id="membership"></v-text-field>
+                  <v-text-field type="text" solo name="number" v-model="step3.dataRequest.number" required :rules="dataRules" ></v-text-field>
                 </v-col>
                 <v-col md="12" sm="12" cols="12">ชื่อเชลล์</v-col>
                 <v-col md="12" sm="12" cols="12">
-                    <v-text-field type="text" solo name="membership" id="membership"></v-text-field>
-                </v-col>
+                  <v-select :items="this.selectOption.saleName" v-model="step3.dataRequest.saleName" name="saleName" label="-- Please Select --" dense solo required :rules="dataRules"> </v-select>
+                </v-col> -->
               </v-row>
             </v-form>
           </div>
         </div>
-        <div id="step4" v-if="currentStep == 4">
+        <div id="step4" v-show="currentStep == 4">
           <b-modal id="bv-modal-cf" size="xl" hide-footer>
             <template #modal-title>
               ยืนยันการเปิดความคุ้มครอง
@@ -503,6 +605,7 @@
             <div class="d-block text-center">
               <div>
                 <b-form-textarea
+                  v-model="step4.dataRequest.remark"
                   id="textarea-rows"
                   placeholder="หมายเหตุ"
                   rows="8"
@@ -514,25 +617,26 @@
             </div>
           </b-modal>
           <div class="content">
-            <v-form>
+            <v-form ref="form4" v-model="valid" lazy-validation>
               <v-row>
                 <v-col md="12" sm="12" cols="12">ประเภทแพ็กเกจ</v-col>
                 <v-col md="12" sm="12" cols="12">
-                    <v-select :items="items" dense solo label="-- โปรดเลือก --"> </v-select>
+                  <v-select :items="this.selectOption.packege" v-model="step4.dataRequest.packege" required :rules="dataRules" solo name="packege" label="เลือกจังหวัดที่ลงทะเบียนรถ"> </v-select>
                 </v-col>
                 <v-col md="12" sm="12" cols="12">วันที่ซื้อแพ็กเกจ</v-col>
                 <v-col md="12" sm="12" cols="12">
-
+                  <b-form-datepicker v-model="step4.packegeDateShow" size="lg" @context="onContext($event,'packegeDate')" id="packegeDate" :date-format-options="{ year: 'numeric', month: 'short', day: '2-digit' }" locale="th"></b-form-datepicker>
+                  <input tag="4" name="packegeDate" type="text" hidden v-model="step4.dataRequest.packegeDate"/>
+                  <label v-show="step4.dataRequest.packegeDate == '' && step4.isCheck" class="valid-lable">กรุณากรอกข้อมูลให้สมบูรณ์</label>
+                  <!--<v-text-field name="packegeDate" tag="date-input" type="text" hidden  v-model="step4.dataRequest.packegeDate" required :rules="dataRules"></v-text-field>-->
                 </v-col>
-
                 <v-col md="12" sm="12" cols="12">ระยะความคุ้มครอง (เดือน)</v-col>
                 <v-col md="12" sm="12" cols="12">
-                    <v-select :items="items" dense solo label="-- โปรดเลือก --"> </v-select>
+                  <v-select :items="this.selectOption.protectMonth" v-model="step4.dataRequest.protectMonth" required :rules="dataRules" solo name="protectMonth" label="เลือกระยะความคุ้มครอง"> </v-select>
                 </v-col>
-
                 <v-col md="12" sm="12" cols="12">ระยะความคุ้มครอง (กิโลเมตร)</v-col>
                 <v-col md="12" sm="12" cols="12">
-                    <v-select :items="items" dense solo label="-- โปรดเลือก --"> </v-select>
+                  <v-select :items="this.selectOption.protectKM" v-model="step4.dataRequest.protectKM" required :rules="dataRules" solo name="protectKM" label="เลือกระยะความคุ้มครอง"> </v-select>
                 </v-col>
               </v-row>
             </v-form>
@@ -556,6 +660,7 @@ import NavBar from '@/components/NavBar'
 import HeaderNavigation from '@/components/HeaderNavigation'
 import { Cropper } from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css'
+import moment from 'moment'
 
 export default {
   data () {
@@ -563,9 +668,12 @@ export default {
       dataRules: [(v) => !!v || 'กรุณากรอกข้อมูลให้สมบูรณ์'],
       imageRules: [(v) => !!v || 'กรุณาอัพโหลดรูป'],
       valid: true,
+      validMode: true,
       row: null,
       currentStep: 1,
       step1: {
+        isCompleteValid: true,
+        isCheck: false,
         imgDataUrl: '',
         imgCrop: '',
         imgSelectUpload: '',
@@ -582,6 +690,8 @@ export default {
         }
       },
       step2: {
+        isCompleteValid: true,
+        isCheck: false,
         imgDataUrl: '',
         imgCrop: '',
         imgSelectUpload: '',
@@ -591,11 +701,27 @@ export default {
         isLoading: false,
         canvasWidth: 0,
         canvasHeight: 0,
+        birthDateShow: '',
         dataRequest: {
-          imgConfirm: ''
+          imgConfirm: '',
+          memberName: '',
+          memberSurName: '',
+          idenNumber: '',
+          sexMember: '',
+          birthDate: '',
+          memberPhone: '',
+          memberEmail: '',
+          memberLineID: '',
+          memberAddress: '',
+          memberProvince: '',
+          memberDistrict: '',
+          memberSubDistrict: '',
+          memberZipCode: ''
         }
       },
       step3: {
+        isCompleteValid: true,
+        isCheck: false,
         imgDataUrl: '',
         imgCrop: '',
         imgSelectUpload: '',
@@ -605,10 +731,94 @@ export default {
         isLoading: false,
         canvasWidth: 0,
         canvasHeight: 0,
+        carDateShow: '',
         dataRequest: {
-          imgConfirm: ''
+          imgConfirm: '',
+          carTent: '',
+          memberCard: '',
+          carBrand: '',
+          carModel: '',
+          tankNumber: '',
+          machineNumber: '',
+          carProvince: '',
+          carId: '',
+          mileage: '',
+          capCar: '',
+          carYear: '',
+          carDate: '',
+          carColor1: '',
+          carColor2: '',
+          carColor3: ''
         }
-      }
+      },
+      step4: {
+        isCompleteValid: true,
+        isCheck: false,
+        packegeDateShow: '',
+        dataRequest: {
+          packege: '',
+          packegeDate: '',
+          protectMonth: '',
+          protectKM: '',
+          remark: ''
+        }
+      },
+      selectOption : {
+        carTent: [{ value: 'a', text: 'Tent1' }],
+        memberCard: [{ value: 'a', text: 'card1' }],
+        carBrand: [{ value: 'a', text: 'This is First option' }],
+        carModel: [{ value: 'model', text: 'model' }],
+        carProvince: [{ value: 'model', text: 'provid car' }],
+        carColor: [{ value: 'model', text: 'color' }],
+        carYear: [],
+        memberProvince: [{ value: 'กทม5', text: 'กทม5' }],
+        memberDistrict:[{ value: 'กทม3', text: 'กทม3' }],
+        memberSubDistrict: [{ value: 'กทม4', text: 'กทม4' }],
+        packege: [{ value: 'pack1', text: 'pack1' }],
+        protectMonth: [{ value: 'protect M', text: 'protect M' }],
+        protectKM: [{ value: 'protect KM', text: 'protect KM' }]
+      },
+      apiModel:{
+        carBrand: [{
+          id: '',
+          name: '',
+          status: ''
+        }],
+        carModel: [{
+          id: '',
+          car_brand_id: '',
+          name: '',
+          status: ''
+        }],
+        carSubModel: [{
+          id: '',
+          car_brand_id: '',
+          name: '',
+          status: ''
+        }],
+        carColor: [{
+          id: '',
+          name_th: '',
+          name_en: ''
+        }],
+        province: [{
+          id: '',
+          code: '',
+          name_th: '',
+          name_en: '',
+          geography_id: ''
+
+        }]
+      },
+      myFormat: {
+        stringify: (date) => {
+          return date ? moment(date).add(543, 'y').format('[Thai year] YYYY-MM-DD') : null
+        },
+        parse: (value) => {
+          return value ? moment(value, '[Thai year] YYYY-MM-DD').subtract(543, 'y').toDate() : null
+        }
+      },
+      value: null 
     }
   },
   computed: {
@@ -622,46 +832,79 @@ export default {
     Cropper
   },
   mounted: function () {
-    this.$nextTick(function () {
-      const withProperty = []
-      const els = document.getElementsByTagName('input')
-      let i = 0
-      for (i = 0; i < els.length; i++) {
-        if (els[i].hasAttribute('tag')) {
-          withProperty.push(els[i])
-        }
-      }
-
-      for (i = 0; i < withProperty.length; i++) {
-        console.log(withProperty)
-        withProperty[0].parentElement.parentElement.style.display = 'none'
-      }
-    })
+    this.selectOption.carYear = this.getYearList()
   },
-  // components () {
-  //   return {
-  //     navbar: NavBar,
-  //     'app-header': HeaderNavigation,
-  //     cropper: Cropper
-  //   }
-  // },
   methods: {
+    getYearList() {
+      var currentYear = new Date().getFullYear() + 543 + 1
+      const end = currentYear - 100
+      let arr = []
+      while (currentYear-- !== end) {
+        arr.push({
+          value: currentYear, text: currentYear.toString()
+        })
+      }
+      return arr
+    },
     scrollToTop () {
       window.scrollTo(0, 0)
     },
     nextStep () {
-      if (this.currentStep === 4) {
-        this.$bvModal.show('bv-modal-cf')
-      } else {
+      if(this.validMode){
         this.validateStep(this.currentStep)
+      }else{
+        this.currentStep += 1
+        this.scrollToTop()
+      }
+    },
+    onContext(ctx,id){
+      if(ctx.selectedDate != null){
+        const dateSplit = ctx.selectedFormatted.split(' ')
+        const year = parseInt(dateSplit[2])
+        const format = dateSplit[0] + " " + dateSplit[1] + " " + (year + 543)
+        if(this.currentStep == 2){
+          this.step2.dataRequest[id] = format
+        }else if(this.currentStep == 3){
+          this.step3.dataRequest[id] = format
+        } else{
+          this.step4.dataRequest[id] = format
+        }
+        
+        //this.step2.dataRequest.birthDate = year
+        //console.log(this.step2.dataRequest.birthDate)
+        setTimeout(() => document.getElementById(id + '__value_').innerHTML = format, 30)
       }
     },
     validateStep (step) {
       if (step === 1) {
-        if (this.$refs.form1.validate()) {
+        this.step1.isCompleteValid = this.step1.dataRequest.imgConfirm != ''
+        this.step1.isCheck = true
+        if (this.$refs.form1.validate() && this.step1.isCompleteValid) {
           this.currentStep += 1
           this.scrollToTop()
-          console.log(this.$refs.form1)
+          //setTimeout(() => this.setUiInputImage(), 200)
+        }
+      } else if(step === 2){
+        this.step2.isCompleteValid = this.step2.dataRequest.imgConfirm != '' && this.step2.dataRequest.birthDate != ''
+        this.step2.isCheck = true
+        if (this.$refs.form2.validate(),this.step2.isCompleteValid) {
+          this.currentStep += 1
+          this.scrollToTop()
+          //setTimeout(() => this.setUiInputImage(), 200)
+        }
+      } else if(step === 3){
+        this.step3.isCompleteValid = this.step3.dataRequest.imgConfirm != ''
+        this.step3.isCheck = true
+        if (this.$refs.form3.validate() && this.step3.isCompleteValid) {
+          this.currentStep += 1
+          this.scrollToTop()
+          //setTimeout(() => this.setUiInputImage(), 100)
+        }
+      } else {
+        this.step4.isCheck = true
+        if (this.$refs.form4.validate()) {
+          this.$bvModal.show('bv-modal-cf')
+          //setTimeout(() => this.setUiInputImage(), 200)
         }
       }
     },
@@ -676,6 +919,7 @@ export default {
     onSelect (optionsSelected) {
       this.step1.optionsSelected = optionsSelected
       this.step1.dataRequest.memberNumber = ''
+      this.step1.dataRequest.imgConfirm = ''
     },
     change ({ coordinates, canvas }) {
       console.log('changed!')
@@ -919,8 +1163,9 @@ export default {
 
 <style lang="scss">
 
-.v-input__slot:has(div):has(input[name="imageMember"]){
-  display: none;
+.v-input--selection-controls.v-input--radio-group{
+  padding-top: 10px !important;
+  margin-top: 0 !important;
 }
 
 .bg-content{
@@ -1016,6 +1261,12 @@ export default {
   background: linear-gradient(to right, #041427, #092d4a, #041427);
 }
 
+.valid-lable{
+    margin-top: 10px;
+    color: red;
+    font-size: small;
+}
+
 .image-card{
     padding: 20px;
     padding: 30px 20px;
@@ -1029,6 +1280,9 @@ export default {
   @media only screen and (max-width: 500px) {
       .image-card>.image-cf{
         height: 250px;
+      }
+      span{
+        font-size: 15px;
       }
   }
 
