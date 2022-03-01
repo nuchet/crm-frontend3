@@ -42,6 +42,7 @@ const getters = {
   StateSaleTent: (state) => state.saleTent,
   StateCustomer: (state) => state.customer,
   StateAddCustomer: (state) => state.addCustomer,
+  StateAddActive: (state) => state.addActive,
 }
 
 const actions = {
@@ -86,13 +87,13 @@ const actions = {
     commit('setProvince', response.data)
   },
 
-  async GetDistrict ({ commit }) {
-    const response = await axios.get('api/province/listdistrict/3')
+  async GetDistrict ({ commit }, provinceId) {
+    const response = await axios.get('api/province/listdistrict/' + provinceId)
     commit('setDistrict', response.data)
   },
 
-  async GetSubDistrict ({ commit }) {
-    const response = await axios.get('api/province/listsubdistrict/3')
+  async GetSubDistrict ({ commit }, districtId) {
+    const response = await axios.get('api/province/listsubdistrict/' + districtId)
     commit('setSubDistrict', response.data)
 
   },
@@ -127,8 +128,8 @@ const actions = {
     commit('setCarColor', response.data)
   },
 
-  async GetCarModel ({ commit }) {
-    const response = await axios.get('api/car/model/1')
+  async GetCarModel ({ commit }, id) {
+    const response = await axios.get('api/car/model/' + id)
     commit('setCarModel', response.data)
   },
 
@@ -183,7 +184,7 @@ const actions = {
   },
 
   async CreateActive ({ commit }, addActive) {
-    const response = await axios.post('api/active', addActive, {
+    const response = await axios.post('api/activate', addActive, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`
       }
@@ -200,6 +201,10 @@ const actions = {
     }
    const response = await axios.post(state.appManUrl + 'front', file, config)
    commit('setResultAppMan', response.data)
+  },
+
+  async ClearState ({ commit}) {
+   commit('clearState')
   }
 }
 
@@ -233,6 +238,9 @@ const mutations = {
   setCarBrand (state, carBrand) {
     state.carBrand = carBrand
   },
+  setCarModel (state, carModel) {
+    state.carModel = carModel
+  },
   setCarColor (state, carColor) {
     state.carColor = carColor
   },
@@ -253,6 +261,18 @@ const mutations = {
   },
   setCardNumber (state, cardStatus) {
     state.cardStatus = cardStatus
+  },
+  setAddActive (state, addActive) {
+    state.addActive = addActive
+  },
+  clearState (state) {
+    state.district = null,
+    state.subdistrict = null,
+    state.carModel = null,
+    state.active = null,
+    state.addCustomer = null,
+    state.addActive = null,
+    state.cardStatus = null
   }
 }
 
