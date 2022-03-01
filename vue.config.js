@@ -3,6 +3,6 @@ module.exports = defineConfig({
   transpileDependencies: true,
   devServer: {
     proxy: 'https://democrm.wsmart.co.th/',
-    // https: true
+    https: true
   }
 })
